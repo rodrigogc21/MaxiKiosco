@@ -1,8 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { obtenerProductos, obtenerCategorias } from "../api/productosApi";
+import { obtenerProductos, obtenerCategorias } from "../api/productosApi.js";
 import { useCarrito } from "../context/carritoContext";
-import Carrito from "../components/carrito";
+import Carrito from "../components/Carrito";
+
 
 const ProductosPorCategoria = () => {
   const { id } = useParams();
