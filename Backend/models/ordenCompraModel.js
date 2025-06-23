@@ -1,4 +1,4 @@
-const db = Require('../config/db')
+const db = require('../config/db')
 
 const crearOrdenCompra = async ({ id_proveedor, id_usuario, productos }) => {
 
