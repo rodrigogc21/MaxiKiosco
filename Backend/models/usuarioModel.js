@@ -1,5 +1,5 @@
-const db = Require('../config/db.js')
-const bcrypt = Require('bcrypt')
+const db = require('../config/db.js')
+const bcrypt = require('bcrypt')
 
 const getUsuarios = async () => {
     const result = await db.query('SELECT * FROM usuario')
