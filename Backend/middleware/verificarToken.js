@@ -1,6 +1,6 @@
-const jwt = Require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
- export const verificarToken = (req, res, next) => {
+ const verificarToken = (req, res, next) => {
 
     const auth = req.headers.authorization
     if (!auth || !auth.startsWith('Bearer ')) {
