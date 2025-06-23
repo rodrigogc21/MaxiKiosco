@@ -1,4 +1,4 @@
-const ventaModel = Require('../models/ventaModel')
+const ventaModel = require('../models/ventaModel')
 
 const procesarVentaDesdeCarrito = async (req, res) => {
     const {id_usuario, id_formaPago} = req.body
