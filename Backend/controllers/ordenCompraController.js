@@ -1,4 +1,4 @@
-const ordenCompraModel = Require('../models/ordenCompraModel')
+const ordenCompraModel = require('../models/ordenCompraModel')
 
 const crearOrden = async (req, res) => {
   try {
