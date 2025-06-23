@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const controlador = require('../../controllers/productoController')
 const verificarToken = require('../../Middleware/verificarToken')
-const verificarRol = require('../../middleware/verificarRol')
+const verificarRol = require('../../Middleware/verificarRol')
 
 
 

@@ -5,8 +5,8 @@ const verificarToken = require('../../Middleware/verificarToken')
 const verificarRol = require('../../Middleware/verificarRol')
 
 router.use(verificarToken)
-router.use(verificarRol(['admin', 'empleado']))
+router.use(verificarRol(['cliente']))
 
-router.post('/procesar-carrito', controlador.procesarVentaDesdeCarrito)
+router.post('/procesar-carrito', controlador.procesarCarrito)
 
 module.exports = router
