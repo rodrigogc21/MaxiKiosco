@@ -1,4 +1,4 @@
-const db = Require('../config/db.js')
+const db = require('../config/db.js')
 
 const procesarCarrito = async (id_usuario, id_formaPago) => {
     await db.query('CALL procesar_carrito(?, ?, @p_id_venta)', [id_usuario, id_formaPago])
