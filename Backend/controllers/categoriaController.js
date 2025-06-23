@@ -1,21 +1,21 @@
-const categoriaModel = Require('../models/categoriaModel')
+const categoriaModel = require('../models/categoriaModel')
 
-export const listarCategorias = async (req, res) => {
+const listarCategorias = async (req, res) => {
     const categorias = await categoriaModel.getCategorias()
     res.json(categorias)
 }
 
-export const obtenerCategoriaPorId = async (req, res) => {
+const obtenerCategoriaPorId = async (req, res) => {
     const categoria = await categoriaModel.getCategoriaById(req.params.id)
     categoria ? res.json(categoria) : res.status(404).json({mensaje: 'Categoría no encontrada'})
 }
 
-export const obtenerCategoriaPorNombre = async (req, res) => {
+const obtenerCategoriaPorNombre = async (req, res) => {
     const categoria = await categoriaModel.getCategoriaByNombre(req.params.nombre)
     categoria ? res.json(categoria) : res.status(404).json({mensaje: 'Categoría no encontrada'})
 }
 
-export const crearCategoria = async (req, res) => {
+const crearCategoria = async (req, res) => {
     try {
         await categoriaModel.crearCategoria(req.body)
         res.status(201).json({mensaje: 'Categoría creada exitosamente'})
@@ -24,7 +24,7 @@ export const crearCategoria = async (req, res) => {
     }
 }
 
-export const editarCategoria = async (req, res) => {
+const editarCategoria = async (req, res) => {
     try {
         await categoriaModel.actualizarCategoria(req.params.id, req.body)
         res.json({mensaje: 'Categoría actualizada exitosamente'})
@@ -33,7 +33,7 @@ export const editarCategoria = async (req, res) => {
     }
 }
 
-export const eliminarCategoria = async (req, res) => {
+const eliminarCategoria = async (req, res) => {
     try {
         await categoriaModel.eliminarCategoria(req.params.id)
         res.json({mensaje: 'Categoría eliminada exitosamente'})
