@@ -6,11 +6,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Rutas públicas
+
 app.use('/api/productos', require('./routes/public/verProductosRoutes'))
 app.use('/api/auth', require('./routes/public/authRoutes'))
 
-//Rutas privadas
+
 app.use('/api/modificar-productos', require('./routes/private/crudProductosRoutes'))
 app.use('/api/usuarios', require('./routes/private/usuariosRoutes'))
 app.use('/api/proveedores', require('./routes/private/proveedoresRoutes'))

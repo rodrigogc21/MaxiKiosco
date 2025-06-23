@@ -1,8 +1,8 @@
-const express = Require('express')
+const express = require('express')
 const router = express.Router()
-const controlador = Require('../controllers/ProveedorController')
-const verificarToken = Require('../middleware/verificarToken')
-const verificarRol = Require('../middleware/verificarRol')
+const controlador = require('../../controllers/ProveedorController')
+const verificarToken = require('../../middleware/verificarToken')
+const verificarRol = require('../../middleware/verificarRol')
 
 router.use(verificarToken)
 router.use(verificarRol(['admin']))

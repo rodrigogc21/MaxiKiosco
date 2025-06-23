@@ -1,17 +1,17 @@
-const productoModel = Require('../models/productoModel')
+const productoModel = require('../models/productoModel')
 
 
-export const listarProductos = async (req, res) => {
+const listarProductos = async (req, res) => {
     const productos = await productoModel.getProductos()
     res.json(productos)
 }
 
-export const obtenerProducto = async (req, res) => {
+const obtenerProducto = async (req, res) => {
     const producto = await productoModel.getProductoById(req.params.id)
     producto ? res.json(producto) : res.status(404).json({error: 'Producto no encontrado'})
 }
 
-export const crearProducto = async (req, res) => {
+const crearProducto = async (req, res) => {
     try {
     await productoModel.crearProducto(req.body)
     res.status(201).json({mensaje: 'Producto creado exitosamente'})
@@ -20,7 +20,7 @@ export const crearProducto = async (req, res) => {
     }
 }
 
-export const editarProducto = async (req, res) => {
+const editarProducto = async (req, res) => {
     try {
     await productoModel.actualizarProducto(req.params.id, req.body)
     res.json({mensaje: 'Producto actualizado exitosamente'})
@@ -29,7 +29,7 @@ export const editarProducto = async (req, res) => {
     }
 }
 
-export const eliminarProducto = async (req, res) => {
+const eliminarProducto = async (req, res) => {
     try {
     await productoModel.eliminarProducto(req.params.id)
     res.json({mensaje: 'Producto eliminado exitosamente'})
