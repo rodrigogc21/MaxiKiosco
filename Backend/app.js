@@ -17,3 +17,8 @@ app.use('/api/proveedores', require('./routes/private/proveedoresRoutes'))
 app.use('/api/categorias', require('./routes/private/categoriasRoutes'))
 app.use('/api/ventas', require('./routes/private/ventasRoutes'))
 app.use('/api/ordenes-compra', require('./routes/private/ordenCompraRoutes'))
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`)
+})

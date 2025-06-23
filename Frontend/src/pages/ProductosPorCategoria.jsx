@@ -16,7 +16,11 @@ const ProductosPorCategoria = () => {
   React.useEffect(() => {
     const cargarDatos = async () => {
       const allProductos = await obtenerProductos();
+      console.log("📦 Productos recibidos:", allProductos);
+
       const allCategorias = await obtenerCategorias();
+      console.log("📂 Categorías recibidas:", allCategorias);
+
       setProductos(allProductos.filter((p) => p.categoriaId === categoriaId));
       setCategoria(allCategorias.find((c) => c.id === categoriaId));
     };

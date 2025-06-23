@@ -1,14 +1,17 @@
-const BASE_URL = "http://localhost:3000/productos";
+const BASE_URL = "http://localhost/MaxiKiosco/api";
 
 export async function obtenerProductos() {
-  const res = await fetch(BASE_URL);
+  const res = await fetch(`${BASE_URL}/productos.php`);
   if (!res.ok) throw new Error("Error al cargar productos");
-  return res.json();
+  const data = await res.json();
+  console.log("📦 Productos cargados:", data); // 👈 Para debugging
+  return data;
 }
 
-// Si necesitas categorías en otro endpoint:
 export async function obtenerCategorias() {
-  const res = await fetch("http://localhost:3000/categorias");
+  const res = await fetch(`${BASE_URL}/categorias.php`);
   if (!res.ok) throw new Error("Error al cargar categorías");
-  return res.json();
+  const data = await res.json();
+  console.log("📂 Categorías cargadas:", data); // 👈 Para debugging
+  return data;
 }
