@@ -1,6 +1,6 @@
-const jwt = Require('jsonwebtoken')
-const bcrypt = Require('bcrypt')
-const usuarioModel = Require('../models/usuarioModel')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const usuarioModel = require('../models/usuarioModel')
 
 const login = async (req, res) =>  {
     const {correo, contraseña} = req.body
@@ -30,4 +30,8 @@ const login = async (req, res) =>  {
     } catch (error) {
         res.statuds(500).json({error: 'Error al iniciar sesión'})
     }
+}
+
+module.exports = {
+    login
 }
