@@ -1,9 +1,9 @@
-const express = Require('express')
+const express = require('express')
 const router = express.Router()
-const controlador = Require('../controllers/authController')
-const controladorUsuario = Require('../controllers/usuarioController')
+const controlador = require('../../controllers/authController')
+const controladorUsuario = require('../../controllers/usuarioController')
 
 router.post('/login', controlador.login)
-router.post('/registro', controlador.registrarCliente)
+router.post('/registro', controladorUsuario.registrarCliente)
 
-Module.exports = router
+module.exports = router
