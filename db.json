@@ -1,0 +1,25 @@
+{
+  "productos": [
+    {
+      "id": "1",
+      "nombre": "Galletitas Oreo",
+      "categoria": "Golosina",
+      "precio": 500,
+      "stock": 10
+    },
+    {
+      "id": "2",
+      "nombre": "Coca-Cola",
+      "categoria": "Bebida",
+      "precio": 700,
+      "stock": 5
+    },
+    {
+      "id": "7e01",
+      "nombre": "Sprite",
+      "categoria": "Bebida",
+      "precio": "500",
+      "stock": "10"
+    }
+  ]
+}

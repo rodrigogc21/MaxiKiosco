@@ -9,10 +9,55 @@
       rel="stylesheet"
     />
   </head>
-  <body>
-    <div id="root"></div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
-  </body>
+<body>
+  <div id="root">
+
+    <div class="container mt-5">
+      <h2 class="mb-4">Listado de productos</h2>
+      <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#productoModal">Agregar producto</button>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-productos">
+          <!-- PRODUCTOS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FORM -->
+    <div class="modal fade" id="productoModal" tabindex="-1">
+      <div class="modal-dialog">
+        <form class="modal-content" id="formularioProducto">
+          <div class="modal-header">
+            <h5 class="modal-title">Nuevo Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control mb-2" name="nombre" placeholder="Nombre" required>
+            <input type="text" class="form-control mb-2" name="categoria" placeholder="Categoría" required>
+            <input type="number" class="form-control mb-2" name="precio" placeholder="Precio" required>
+            <input type="number" class="form-control mb-2" name="stock" placeholder="Stock" required>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./src/main.js"></script>
+
+</body>
+
 </html>
