@@ -1,8 +1,8 @@
-const express = Require('express')
+const express = require('express')
 const router = express.Router()
-const controlador = Require('../controllers/usuarioController')
-const verificarToken = Require('../middleware/verificarToken')
-const verificarRol = Require('../middleware/verificarRol')
+const controlador = require('../../controllers/usuarioController')
+const verificarToken = require('../../Middleware/verificarToken')
+const verificarRol = require('../../Middleware/verificarRol')
 
 
 router.use(verificarToken)
@@ -13,3 +13,5 @@ router.get('/:id', controlador.obtenerUsuario)
 router.post('/crear', controlador.crearUsuarioDesdeAdmin)
 router.put('/:id', controlador.editarUsuario)
 router.delete('/:id', controlador.eliminarUsuario)
+
+module.exports = router
