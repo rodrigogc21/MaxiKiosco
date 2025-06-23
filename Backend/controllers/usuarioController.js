@@ -1,17 +1,16 @@
-const usuarioModel = Require('../models/usuarioModel')
-const bcrypt = Require('bcrypt')
+const usuarioModel = require('../models/usuarioModel')
+const bcrypt = require('bcrypt')
 
-export const listarUsuarios = async (req, res) => {
+const listarUsuarios = async (req, res) => {
     const usuarios = await usuarioModel.getUsuarios()
     res.json(usuarios)
 }
-
-export const obtenerUsuario = async (req, res) => {
+const obtenerUsuario = async (req, res) => {
     const usuario = await usuarioModel.getUsuarioById(req.params.id)
     usuario ? res.json(usuario) : res.status(404).json({mensaje: 'Usuario no encontrado'})
 }
 
-export const registrarCliente = async (req, res) => {
+const registrarCliente = async (req, res) => {
     try {
         const datos = req.body
         const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
@@ -23,7 +22,7 @@ export const registrarCliente = async (req, res) => {
         res.status(500).json({error: 'Error al registrar el cliente'})
     }
 }
-export const crearUsuarioDesdeAdmin = async (req, res) => {
+const crearUsuarioDesdeAdmin = async (req, res) => {
     try {
         const datos = req.body
         const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
@@ -36,7 +35,7 @@ export const crearUsuarioDesdeAdmin = async (req, res) => {
     }
 }
 
-export const editarUsuario = async (req, res) => {
+const editarUsuario = async (req, res) => {
     try {
         await usuarioModel.actualizarUsuario(req.params.id, req.body)
         res.json({mensaje: 'Usuario actualizado exitosamente'})
@@ -45,7 +44,7 @@ export const editarUsuario = async (req, res) => {
     }
 }
 
-export const eliminarUsuario = async (req, res) => {
+const eliminarUsuario = async (req, res) => {
     try {
         await usuarioModel.eliminarUsuario(req.params.id)
         res.json({mensaje: 'Usuario eliminado exitosamente'})
