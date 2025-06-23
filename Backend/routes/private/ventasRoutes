@@ -1,0 +1,12 @@
+const express = Require('express')
+const router = express.Router()
+const controlador = Require('../controllers/ventaController')
+verificarToken = Require('../middleware/verificarToken')
+verificarRol = Require('../middleware/verificarRol')
+
+router.use(verificarToken)
+router.use(verificarRol(['admin', 'empleado']))
+
+router.post('/procesar-carrito', controlador.procesarVentaDesdeCarrito)
+
+module.exports = router

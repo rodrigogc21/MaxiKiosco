@@ -1,30 +1,42 @@
-const usuarioModel = require('../models/usuarioModel')
+const usuarioModel = Require('../models/usuarioModel')
+const bcrypt = Require('bcrypt')
 
-const listarUsuarios = async (req, res) => {
+export const listarUsuarios = async (req, res) => {
     const usuarios = await usuarioModel.getUsuarios()
     res.json(usuarios)
 }
 
-const obtenerUsuario = async (req, res) => {
+export const obtenerUsuario = async (req, res) => {
     const usuario = await usuarioModel.getUsuarioById(req.params.id)
     usuario ? res.json(usuario) : res.status(404).json({mensaje: 'Usuario no encontrado'})
 }
 
-const crearUsuario = async (req, res) => {
-    try { 
-        const {email} = req.body
-        const existente = await usuarioModel.getUsuarioByMail(correo)
-        if (existente) {
-            return res.status(400).json({mensaje: 'El correo ya está registrado'})
-        }
-        await usuarioModel.crearUsuario(req.body)
-        res.status(201).json({mensaje: 'Usuario creado exitosamente'})
+export const registrarCliente = async (req, res) => {
+    try {
+        const datos = req.body
+        const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
+
+        await usuarioModel.registrarCliente({...datos, contraseña: hashedPassword})
+
+        res.status(201).json({mensaje: 'Cliente registrado exitosamente'})
+    } catch(error) {
+        res.status(500).json({error: 'Error al registrar el cliente'})
+    }
+}
+export const crearUsuarioDesdeAdmin = async (req, res) => {
+    try {
+        const datos = req.body
+        const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
+
+        await usuarioModel.crearUsuarioDesdeAdmin({...datos, contraseña: hashedPassword})
+
+        res.status(201).json({mensaje: 'Usuario creado por el administrador exitosamente'})
     } catch (error) {
         res.status(500).json({error: 'Error al crear el usuario'})
     }
 }
 
-const editarUsuario = async (req, res) => {
+export const editarUsuario = async (req, res) => {
     try {
         await usuarioModel.actualizarUsuario(req.params.id, req.body)
         res.json({mensaje: 'Usuario actualizado exitosamente'})
@@ -33,7 +45,7 @@ const editarUsuario = async (req, res) => {
     }
 }
 
-const eliminarUsuario = async (req, res) => {
+export const eliminarUsuario = async (req, res) => {
     try {
         await usuarioModel.eliminarUsuario(req.params.id)
         res.json({mensaje: 'Usuario eliminado exitosamente'})
@@ -45,7 +57,8 @@ const eliminarUsuario = async (req, res) => {
 module.exports = {
     listarUsuarios,
     obtenerUsuario,
-    crearUsuario, 
+    registrarCliente,
+    crearUsuarioDesdeAdmin, 
     editarUsuario,
     eliminarUsuario
 }

@@ -1,53 +1,53 @@
-const db = require('../config/db.js')
-const bcrypt = require('bcrypt')
+const db = Require('../config/db.js')
+const bcrypt = Require('bcrypt')
 
 const getUsuarios = async () => {
-    const result = await db.query('SELECT id_usuario, nombre, apellido, correo, direccion, telefono, rol FROM usuario')
+    const result = await db.query('SELECT * FROM usuario')
     return result.rows
 }
 
 const getUsuarioById = async (id) => {
-    const result = await db.query('SELECT id_usuario, nombre, apellido, correo, direccion, telefono, rol FROM usuario WHERE id_usuario = ?', [id])
+    const result = await db.query('SELECT * FROM usuario WHERE id_usuario = ?', [id])
     return result.rows[0]
 }
 
 const getUsuarioByMail = async (correo) => {
-    const result = await db.query('SELECT id_usuario, nombre, apellido, correo, direccion, telefono, rol FROM usuario WHERE correo = ?', [correo])
+    const result = await db.query('SELECT * FROM usuario WHERE correo_usuario = ?', [correo])
     return result.rows[0]
 }
 
-const crearUsuario = async ({nombre, apellido, correo, contraseña, direccion, telefono, rol}) => {
+
+const registrarCliente = async ({nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario}) => {
     const hashedPassword = await bcrypt.hash(contraseña, 10)
-    await db.query(
-        'INSERT INTO usuario (nombre, apellido, correo, contraseña, direccion, telefono, rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [nombre, apellido, correo, hashedPassword, direccion, telefono, rol || 'cliente'] // Default role is 'cliente' if not provided
+    await db.query (
+        'CALL insertar_usuario_cliente(?, ?, ?, ?, ?, ?)', [
+            nombre_usuario, apellido_usuario, correo_usuario, hashedPassword, direccion_usuario, telefono_usuario            
+        ]
     )
 }
-
-const actualizarUsuario = async (id, {nombre, apellido, correo, direccion, telefono, rol}) => {
-    const query = 'UPDATE usuario SET nombre = ?, apellido = ?, correo = ?, direccion = ?, telefono = ?, rol = ?'
-    const params = [nombre, apellido, correo, direccion, telefono, rol]
-    if (contraseña) {
-        const hashedPassword = await bcrypt.hash(contraseña, 10)
-        query += 'contraseña = ?'
-        params.push(hashedPassword)
-    }
-
-    query += ' WHERE id_usuario = ?'
-    params.push(id)
-
-    await db.query(query, params)
+const crearUsuarioDesdeAdmin = async ({nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol}) => {
+    const hashedPassword = await bcrypt.hash(contraseña, 10)
+    await db.query('CALL crear_usuario(?, ?, ?, ?, ?, ?, ?)', [
+        nombre_usuario, apellido_usuario, correo_usuario, hashedPassword, direccion_usuario, telefono_usuario, rol
+    ])
 }
 
-const eliminarUsuario = async (id) => {
-    await db.query('DELETE FROM usuario WHERE id_usuario = ?', [id])
+const actualizarUsuario = async (id_usuario, {nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol}) => {
+    await db.query('CALL actualizar_usuario(?, ?, ?, ?, ?, ?, ?, ?)', [
+        id_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol
+    ])
+}
+
+const eliminarUsuario = async (id_usuario) => {
+    await db.query('CALL eliminar_usuario(?)', [id_usuario])
 }
 
 module.exports = {
     getUsuarios,
     getUsuarioById,
     getUsuarioByMail,
-    crearUsuario,
+    registrarCliente,
+    crearUsuarioDesdeAdmin,
     actualizarUsuario,
     eliminarUsuario
 }
