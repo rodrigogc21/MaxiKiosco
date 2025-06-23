@@ -1,4 +1,4 @@
-const db = Require('../config/db.js')
+const db = require('../config/db.js')
 
 const getProveedores = async () => {
     const result = await db.query('SELECT * FROM proveedor')
