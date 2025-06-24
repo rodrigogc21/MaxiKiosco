@@ -76,7 +76,7 @@ const ProductosPorCategoria = () => {
         <Carrito />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ProductosPorCategoria;

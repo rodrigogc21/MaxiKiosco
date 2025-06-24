@@ -36,12 +36,3 @@ module.exports = {
     actualizarProducto,
     eliminarProducto
 }
-
-
-
-const probarConexion = async () => {
-    const [rows] = await db.query('SELECT 1 + 1 as resultado')
-    console.log('Conexión OK. Resultado: ', rows[0].resultado)
-}
-
-probarConexion()

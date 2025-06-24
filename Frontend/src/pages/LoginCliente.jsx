@@ -1,37 +1,42 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 
-const LoginCliente = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [contraseña, setContraseña] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-    if (email.trim() === "") {
-      setError("Por favor ingrese su correo.");
-      return;
+    try {
+      const res = await axios.post('/auth/login', {
+        email,
+        contraseña
+      })
+
+      const token = res.data.token
+      localStorage.setItem('token', token)
+
+      
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const rol = payload.rol
+
+      
+      if (rol === 'admin') navigate('/admin')
+      else if (rol === 'empleado') navigate('/empleado')
+      else navigate('/cliente')
+
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
     }
+  }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Por favor ingrese un correo válido.");
-      return;
-    }
-
-    if (password.trim() === "") {
-      setError("Por favor ingrese su contraseña.");
-      return;
-    }
-
-    setError("");
-    navigate("/home");
-  };
 
   return (
     <form
-      onSubmit={handleLogin}
+      onSubmit={handleSubmit}
       style={{
         padding: "2rem",
         maxWidth: "320px",
@@ -63,8 +68,8 @@ const LoginCliente = () => {
       <input
         type="password"
         placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={contraseña}
+        onChange={(e) => setContraseña(e.target.value)}
         style={{
           width: "100%",
           padding: "0.75rem",
@@ -75,7 +80,7 @@ const LoginCliente = () => {
           boxSizing: "border-box",
         }}
       />
-      {error && (
+      {err && (
         <p style={{ color: "#dc3545", marginTop: "1rem", fontWeight: "600" }}>
           {error}
         </p>
@@ -103,4 +108,4 @@ const LoginCliente = () => {
   );
 };
 
-export default LoginCliente;
+export default Login

@@ -1,6 +1,16 @@
 import React from "react";
+import axios from "axios";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCarrito } from "../context/carritoContext";
+const token = localStorage.getItem('token');
+
+await axios.post('/ventas/procesar-carrito', {
+  id_formaPago: ''
+}, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
 
 const Carrito = () => {
   const {
