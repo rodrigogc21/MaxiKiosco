@@ -37,8 +37,8 @@ const handleLogin = async (e) => {
 
   if (res.ok) {
     localStorage.setItem("token", data.token);
-    console.log("Usuario ha ingresado correctamente"); // Mensaje en consola
-    navigate("/home");  // O cualquier ruta privada
+    console.log("Usuario ha ingresado correctamente")
+    navigate("/home");
   } else {
     setError(data.error || "Error al iniciar sesión");
   }
