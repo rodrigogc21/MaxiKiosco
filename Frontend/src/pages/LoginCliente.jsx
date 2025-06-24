@@ -7,27 +7,47 @@ const LoginCliente = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    if (email.trim() === "") {
-      setError("Por favor ingrese su correo.");
-      return;
-    }
+  if (email.trim() === "") {
+    setError("Por favor ingrese su correo.");
+    return;
+  }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Por favor ingrese un correo válido.");
-      return;
-    }
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    setError("Por favor ingrese un correo válido.");
+    return;
+  }
 
-    if (password.trim() === "") {
-      setError("Por favor ingrese su contraseña.");
-      return;
-    }
+  if (password.trim() === "") {
+    setError("Por favor ingrese su contraseña.");
+    return;
+  }
 
-    setError("");
-    navigate("/home");
-  };
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo_usuario: email, contraseña: password })
+    });
+
+
+    const data = await res.json();
+
+  if (res.ok) {
+    localStorage.setItem("token", data.token);
+    console.log("Usuario ha ingresado correctamente"); // Mensaje en consola
+    navigate("/home");  // O cualquier ruta privada
+  } else {
+    setError(data.error || "Error al iniciar sesión");
+  }
+
+  } catch (error) {
+    console.error(error);
+    setError("Error al conectar con el servidor");
+  }
+};
 
   return (
     <form
