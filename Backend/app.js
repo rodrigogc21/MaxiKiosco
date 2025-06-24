@@ -3,7 +3,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json())
 
 
@@ -18,7 +18,8 @@ app.use('/api/categorias', require('./routes/private/categoriasRoutes'))
 app.use('/api/ventas', require('./routes/private/ventasRoutes'))
 app.use('/api/ordenes-compra', require('./routes/private/ordenCompraRoutes'))
 
-const PORT = process.env.PORT || 3000
+
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`)
-})
+  console.log(`Servidor en http://localhost:${PORT}`);
+});
