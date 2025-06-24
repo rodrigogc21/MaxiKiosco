@@ -3,17 +3,17 @@ const bcrypt = require('bcrypt')
 const usuarioModel = require('../models/usuarioModel')
 
 const login = async (req, res) =>  {
-    const {correo, contraseña} = req.body
+    const { correo_usuario, contraseña } = req.body  // <-- acá el cambio
 
     try {
-        const usuario = await usuarioModel.getUsuarioByMail(correo)
+        const usuario = await usuarioModel.getUsuarioByMail(correo_usuario)
         if (!usuario) {
-            return res.status(404).json({error: 'Usuario no encontrado'})
+            return res.status(404).json({ error: 'Usuario no encontrado' })
         }
 
         const coincide = await bcrypt.compare(contraseña, usuario.contraseña)
         if (!coincide) {
-            return res.status(401).json({error: 'Contraseña incorrecta'})
+            return res.status(401).json({ error: 'Contraseña incorrecta' })
         }
 
         const token = jwt.sign(
@@ -22,13 +22,14 @@ const login = async (req, res) =>  {
                 nombre: usuario.nombre_usuario,
                 rol: usuario.rol
             },
-            process.env.JWT_SECRET,
-            {expiresIn: '2h'}
+            process.env.JWT_SECRET || 'tu_secreto_aqui',
+            { expiresIn: '2h' }
         )
 
-        res.json({mensaje: 'Inicio de sesión exitoso', token})
+        res.json({ token })  // Devuelve solo el token
     } catch (error) {
-        res.statuds(500).json({error: 'Error al iniciar sesión'})
+        console.error('Error en login:', error)
+        res.status(500).json({ error: 'Error al iniciar sesión' })
     }
 }
 

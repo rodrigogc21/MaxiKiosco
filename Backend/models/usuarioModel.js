@@ -2,29 +2,27 @@ const db = require('../config/db.js')
 const bcrypt = require('bcrypt')
 
 const getUsuarios = async () => {
-    const result = await db.query('SELECT * FROM usuario')
-    return result.rows
+    const [rows] = await db.query('SELECT * FROM usuario')
+    return rows
 }
 
 const getUsuarioById = async (id) => {
-    const result = await db.query('SELECT * FROM usuario WHERE id_usuario = ?', [id])
-    return result.rows[0]
+    const [rows] = await db.query('SELECT * FROM usuario WHERE id_usuario = ?', [id])
+    return rows[0]
 }
 
 const getUsuarioByMail = async (correo) => {
-    const result = await db.query('SELECT * FROM usuario WHERE correo_usuario = ?', [correo])
-    return result.rows[0]
+    const [rows] = await db.query('SELECT * FROM usuario WHERE correo_usuario = ?', [correo])
+    return rows[0]
 }
-
 
 const registrarCliente = async ({nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario}) => {
-    const hashedPassword = await bcrypt.hash(contraseña, 10)
-    await db.query (
-        'CALL insertar_usuario_cliente(?, ?, ?, ?, ?, ?)', [
-            nombre_usuario, apellido_usuario, correo_usuario, hashedPassword, direccion_usuario, telefono_usuario            
-        ]
+    await db.query(
+        'CALL insertar_usuario_cliente(?, ?, ?, ?, ?, ?)',
+        [nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario]
     )
 }
+
 const crearUsuarioDesdeAdmin = async ({nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol}) => {
     const hashedPassword = await bcrypt.hash(contraseña, 10)
     await db.query('CALL crear_usuario(?, ?, ?, ?, ?, ?, ?)', [

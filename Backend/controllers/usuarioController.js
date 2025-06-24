@@ -5,23 +5,25 @@ const listarUsuarios = async (req, res) => {
     const usuarios = await usuarioModel.getUsuarios()
     res.json(usuarios)
 }
+
 const obtenerUsuario = async (req, res) => {
     const usuario = await usuarioModel.getUsuarioById(req.params.id)
     usuario ? res.json(usuario) : res.status(404).json({mensaje: 'Usuario no encontrado'})
 }
 
 const registrarCliente = async (req, res) => {
-    try {
-        const datos = req.body
-        const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
-
-        await usuarioModel.registrarCliente({...datos, contraseña: hashedPassword})
-
-        res.status(201).json({mensaje: 'Cliente registrado exitosamente'})
-    } catch(error) {
-        res.status(500).json({error: 'Error al registrar el cliente'})
-    }
+  try {
+    const datos = req.body
+    const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
+    await usuarioModel.registrarCliente({ ...datos, contraseña: hashedPassword })
+    res.status(201).json({ mensaje: 'Cliente registrado exitosamente' })
+  } catch (error) {
+    console.error('Error en registrarCliente:', error)
+    res.status(500).json({ error: error.message || 'Error al registrar el cliente' })
+  }
 }
+
+
 const crearUsuarioDesdeAdmin = async (req, res) => {
     try {
         const datos = req.body

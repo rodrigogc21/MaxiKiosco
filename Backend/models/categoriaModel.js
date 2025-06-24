@@ -1,9 +1,9 @@
-const db = require('../config/db.js')
+const db = require('../config/db.js');
 
 const getCategorias = async () => {
-    const result = await db.query('SELECT * FROM categoria')
-    return result.rows
-}
+  const [rows] = await db.query('SELECT * FROM categoria')
+  return rows;
+};
 
 const getCategoriaById = async (id_categoria) => {
     const result = await db.query('SELECT * FROM categoria WHERE id_categoria = ?', [id_categoria])
@@ -35,4 +35,4 @@ module.exports = {
     crearCategoria,
     actualizarCategoria,
     eliminarCategoria
-}
+};

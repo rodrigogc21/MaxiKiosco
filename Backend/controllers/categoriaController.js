@@ -1,8 +1,9 @@
 const categoriaModel = require('../models/categoriaModel')
 
 const listarCategorias = async (req, res) => {
-    const categorias = await categoriaModel.getCategorias()
-    res.json(categorias)
+  const categorias = await categoriaModel.getCategorias();
+  console.log('Categorias obtenidas:', categorias);
+  res.json(categorias);
 }
 
 const obtenerCategoriaPorId = async (req, res) => {
@@ -29,7 +30,7 @@ const editarCategoria = async (req, res) => {
         await categoriaModel.actualizarCategoria(req.params.id, req.body)
         res.json({mensaje: 'Categoría actualizada exitosamente'})
     } catch (error) {
-        res.stratus(500).json({error: 'Error al actualizar la categoría'})
+        res.status(500).json({error: 'Error al actualizar la categoría'})
     }
 }
 
@@ -42,11 +43,23 @@ const eliminarCategoria = async (req, res) => {
     }
 }
 
+const crearProducto = async (req, res) => {
+  try {
+    await productoModel.crearProducto(req.body);
+    res.status(201).json({ mensaje: 'Producto creado exitosamente' });
+  } catch (error) {
+    console.error('Error al crear producto:', error);
+    res.status(500).json({ error: 'Error al crear el producto' });
+  }
+};
+
+
 module.exports = {
     listarCategorias,
     obtenerCategoriaPorId,
     obtenerCategoriaPorNombre,
     crearCategoria,
     editarCategoria,
-    eliminarCategoria
+    eliminarCategoria,
+    crearProducto
 }

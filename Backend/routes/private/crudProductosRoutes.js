@@ -1,16 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const controlador = require('../../controllers/productoController')
-const verificarToken = require('../../Middleware/verificarToken')
-const verificarRol = require('../../middleware/verificarRol')
+const express = require('express');
+const router = express.Router();
+const productoController = require('../../controllers/productoController');
 
+// Crear producto
+router.post('/', productoController.crearProducto);
 
+// Editar producto
+router.put('/:id', productoController.editarProducto);
 
-router.use(verificarToken)
-router.use(verificarRol(['admin', 'empleado']))
+// Eliminar producto
+router.delete('/:id', productoController.eliminarProducto);
 
-router.post('/', controlador.crearProducto)
-router.put('/:id', controlador.editarProducto)
-router.delete('/:id', controlador.eliminarProducto)
+// Obtener producto por ID
+router.get('/:id', productoController.obtenerProducto);
 
-module.exports = router
+module.exports = router;
