@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const usuarioModel = require('../models/usuarioModel')
 
 const login = async (req, res) =>  {
-    const { correo_usuario, contraseña } = req.body  // <-- acá el cambio
+    const { correo_usuario, contraseña } = req.body 
 
     try {
         const usuario = await usuarioModel.getUsuarioByMail(correo_usuario)
@@ -26,7 +26,7 @@ const login = async (req, res) =>  {
             { expiresIn: '2h' }
         )
 
-        res.json({ token })  // Devuelve solo el token
+        res.json({ token })
     } catch (error) {
         console.error('Error en login:', error)
         res.status(500).json({ error: 'Error al iniciar sesión' })
