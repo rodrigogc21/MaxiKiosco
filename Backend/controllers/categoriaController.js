@@ -5,8 +5,8 @@ const listarCategorias = async (req, res) => {
       const categorias = await categoriaModel.getCategorias();
       res.json(categorias);
     } catch (error) {
-      console.error(error)
-      res.status(500).json({error: 'Error al obtener categorías'})
+      console.error('Error al obtener categorías', error)
+      res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -25,7 +25,8 @@ const crearCategoria = async (req, res) => {
         await categoriaModel.crearCategoria(req.body)
         res.status(201).json({mensaje: 'Categoría creada exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al crear la categoría'})
+        console.error('Error al crear la categoría', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -34,7 +35,8 @@ const editarCategoria = async (req, res) => {
         await categoriaModel.actualizarCategoria(req.params.id, req.body)
         res.json({mensaje: 'Categoría actualizada exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al actualizar la categoría'})
+        console.error('Error al actualizar la categoría', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -43,7 +45,8 @@ const eliminarCategoria = async (req, res) => {
         await categoriaModel.eliminarCategoria(req.params.id)
         res.json({mensaje: 'Categoría eliminada exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al eliminar la categoría'})
+        console.error('Error al eliminar la categoría', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -53,7 +56,7 @@ const crearProducto = async (req, res) => {
     res.status(201).json({ mensaje: 'Producto creado exitosamente' });
   } catch (error) {
     console.error('Error al crear producto:', error);
-    res.status(500).json({ error: 'Error al crear el producto' });
+    res.status(500).json({ error: 'Error al crear el producto' })
   }
 };
 

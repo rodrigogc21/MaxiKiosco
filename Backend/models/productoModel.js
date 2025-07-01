@@ -16,9 +16,23 @@ const getProductosPorCategoria = async (id_categoria) => {
 };
 
 
-const crearProducto = async ({ nombre_producto, descripcion_producto, precio_producto, stock, imagen_url, id_categoria, id_proveedor }) => {
+const crearProducto = async ({ 
+  nombre_producto,
+  descripcion_producto,
+  precio_producto,
+  stock,
+  imagen_url,
+  id_categoria,
+  id_proveedor
+ }) => {
   await db.query('CALL insertar_producto (?, ?, ?, ?, ?, ?, ?)', [
-    nombre_producto, descripcion_producto, precio_producto, stock, imagen_url, id_categoria, id_proveedor
+    nombre_producto,
+    descripcion_producto,
+    precio_producto,
+    stock,
+    imagen_url,
+    id_categoria,
+    id_proveedor
   ]);
 };
 

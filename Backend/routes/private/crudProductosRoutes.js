@@ -8,8 +8,8 @@ router.use(verificarToken)
 router.use(verificarRol(['admin', 'empleado']))
 
 router.post('/', productoController.crearProducto);
-router.put('/:id_producto', productoController.editarProducto);
-router.delete('/:id_producto', productoController.eliminarProducto);
-router.get('/:id_producto', productoController.obtenerProducto);
+router.put('/:id', productoController.editarProducto);
+router.delete('/:id', productoController.eliminarProducto);
+router.get('/:id', productoController.obtenerProducto);
 
 module.exports = router;

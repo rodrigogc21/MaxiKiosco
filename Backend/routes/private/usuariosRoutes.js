@@ -8,9 +8,9 @@ router.use(verificarToken);
 router.use(verificarRol(['admin', 'empleado']));
 
 router.get('/', controladorUsuario.listarUsuarios);
-router.get('/:id_usuario', controladorUsuario.obtenerUsuario);
+router.get('/:id', controladorUsuario.obtenerUsuario);
 router.post('/crear', controladorUsuario.crearUsuarioDesdeAdmin);
-router.put('/:id_usuario', controladorUsuario.editarUsuario);
-router.delete('/:id_usuario', controladorUsuario.eliminarUsuario);
+router.put('/:id', controladorUsuario.editarUsuario);
+router.delete('/:id', controladorUsuario.eliminarUsuario);
 
-module.exports = router;
+module.exports = router

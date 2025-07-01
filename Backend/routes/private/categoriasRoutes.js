@@ -7,8 +7,8 @@ const verificarRol = require('../../Middleware/verificarRol')
 router.use(verificarToken)
 router.use(verificarRol(['admin']))
 
-router.post('/', controlador.crearCategoria);
-router.put('/:id_categoria', controlador.editarCategoria);
-router.delete('/:id_categoria', controlador.eliminarCategoria);
+router.post('/crear', controlador.crearCategoria);
+router.put('/:id', controlador.editarCategoria);
+router.delete('/:id', controlador.eliminarCategoria);
 
 module.exports = router;

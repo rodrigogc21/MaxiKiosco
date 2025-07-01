@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useUser } from '../context/userContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const Productos = () => {
   const { usuario } = useUser();
@@ -18,6 +18,7 @@ const Productos = () => {
     id_proveedor: ''
   });
   const [editando, setEditando] = useState(null);
+  const navigate = useNavigate()
 
   const fetchProductos = async () => {
     const res = await axios.get('http://localhost:3001/api/productos');
@@ -55,58 +56,95 @@ const Productos = () => {
     fetchProveedores();
   }, []);
 
-  const handleChange = (e) => {
+   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  if (!token) return console.error('Token no encontrado');
 
-    const token = localStorage.getItem('token');
-  if (!token) {
-    console.error('Token no encontrado en localStorage');
-    return;
-  }
+  if (editando) {
+    const datos = {
+      ...form,
+      id_producto: Number(editando),
+      precio_producto: parseFloat(form.precio_producto),
+      stock: parseInt(form.stock),
+      id_categoria: parseInt(form.id_categoria),
+      id_proveedor: parseInt(form.id_proveedor),
+    };
 
-    if (editando) {
-      console.log('Enviando PUT con:', form);
-      await axios.put(`http://localhost:3001/api/modificar-producto/${editando}`, { 
-       ...form,
-       precio_producto: parseFloat(form.precio_producto),
-       stock: parseInt(form.stock),
-       id_categoria: parseInt(form.id_categoria),
-       id_proveedor: parseInt(form.id_proveedor),
-      }, {
-      headers: {
-      Authorization: `Bearer ${token}`,
-      }})
-    } else {
-      await axios.post('http://localhost:3001/api/modificar-producto', form, {
-      headers: {
-      Authorization: `Bearer ${token}`,
-      }})
+    if (isNaN(datos.id_producto)) {
+      console.error('El ID del producto es inválido:', datos.id_producto);
+      return;
     }
 
-    setForm({
-      nombre_producto: '',
-      descripcion_producto: '',
-      precio_producto: '',
-      stock: '',
-      imagen_url: '',
-      id_categoria: '',
-      id_proveedor: ''
-    });
-    setEditando(null);
-    fetchProductos();
-  };
+    try {
+      console.log('Enviando PUT con datos:', datos);
+      console.log('Editando ID:', editando, 'typeof:', typeof editando);
+      if (!editando || isNaN(editando)) {
+        console.error('El ID del producto es inválido antes del PUT:', editando);
+        return;
+      }
+      await axios.put(`http://localhost:3001/api/modificar-producto/${editando}`, datos, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      console.error('Error al enviar PUT:', error.response?.data || error.message);
+      return
+    }
+  } else {
+    const datos = {
+      ...form,
+      precio_producto: parseFloat(form.precio_producto),
+      stock: parseInt(form.stock),
+      id_categoria: parseInt(form.id_categoria),
+      id_proveedor: parseInt(form.id_proveedor),
+    };
+
+    try {
+      console.log('Enviando POST con datos:', datos);
+      await axios.post('http://localhost:3001/api/modificar-producto', datos, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      console.error('Error al enviar POST:', error.response?.data || error.message);
+      return;
+    }
+  }
+
+  setForm({
+    nombre_producto: '',
+    descripcion_producto: '',
+    precio_producto: '',
+    stock: '',
+    imagen_url: '',
+    id_categoria: '',
+    id_proveedor: ''
+  });
+
+  setEditando(null);
+
+  fetchProductos();
+};
 
   const handleEdit = (p) => {
-    setForm(p);
-    setEditando(p.id_producto);
-  };
+
+    setForm({
+    nombre_producto: p.nombre_producto || '',
+    descripcion_producto: p.descripcion_producto || '',
+    precio_producto: p.precio_producto?.toString() || '',
+    stock: p.stock?.toString() || '',
+    imagen_url: p.imagen_url || '',
+    id_categoria: p.id_categoria?.toString() || '',
+    id_proveedor: p.id_proveedor?.toString() || '',
+  });
+
+  setEditando(Number(p.id_producto));
+};
 
   const handleDelete = async (id) => {
-
     const token = localStorage.getItem('token');
   if (!token) {
     console.error('Token no encontrado en localStorage');
@@ -129,6 +167,14 @@ const Productos = () => {
 
   return (
     <div className="container mt-4">
+      <div className="text-end mb-3">
+        <button
+         className="btn btn-secondary mb-3"
+         onClick={() => navigate('/menu')}
+        >
+          ← Volver al Menú
+        </button>
+      </div>
       <h2>Gestión de Productos</h2>
 
       <form className="row g-3 mb-4" onSubmit={handleSubmit}>

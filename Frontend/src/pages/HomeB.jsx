@@ -15,8 +15,8 @@ const HomeB = () => {
         <div className="row align-items-center">
           <div className="col-md-6">
             <img
-              src="https://i.imgur.com/RG0HjGg.jpg"
-              alt="Kiosco"
+              src="https://i.imgur.com/GWHC14C.jpeg"
+              alt="MaxiKiosco"
               className="img-fluid rounded shadow"
             />
           </div>

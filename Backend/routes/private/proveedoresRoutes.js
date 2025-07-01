@@ -8,9 +8,9 @@ router.use(verificarToken)
 router.use(verificarRol(['admin']))
 
 router.get('/', controlador.listarProveedores)
-router.get('/:id_proveedor', controlador.obtenerProveedor)
+router.get('/:id', controlador.obtenerProveedor)
 router.post('/', controlador.crearProveedor)
-router.put('/:id_proveedor', controlador.editarProveedor)
-router.delete('/:id_proveedor', controlador.eliminarProveedor)
+router.put('/:id', controlador.editarProveedor)
+router.delete('/:id', controlador.eliminarProveedor)
 
 module.exports = router

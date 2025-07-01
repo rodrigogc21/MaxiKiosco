@@ -19,6 +19,7 @@ app.use('/api/categorias', verCategoriasRoutes);
 
 
 // Rutas privadas
+ 
 app.use('/api/modificar-producto', require('./routes/private/crudProductosRoutes'));
 app.use('/api/usuarios', require('./routes/private/usuariosRoutes'));
 app.use('/api/proveedores', require('./routes/private/proveedoresRoutes'));

@@ -36,10 +36,15 @@ const crearUsuarioDesdeAdmin = async ({nombre_usuario, apellido_usuario, correo_
     ])
 }
 
-const actualizarUsuario = async (id_usuario, {nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol}) => {
-    await db.query('CALL actualizar_usuario(?, ?, ?, ?, ?, ?, ?, ?)', [
-        id_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario, rol
+const actualizarUsuario = async (id_usuario, {nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario}) => {
+    try {
+    await db.query('CALL actualizar_usuario(?, ?, ?, ?, ?, ?, ?)', [
+        id_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña, direccion_usuario, telefono_usuario
     ])
+    } catch (error) {
+        console.error('Error en SP actualizar_usuario', error)
+        throw error
+    }
 }
 
 const eliminarUsuario = async (id_usuario) => {
