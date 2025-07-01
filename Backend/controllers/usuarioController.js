@@ -1,5 +1,4 @@
 const usuarioModel = require('../models/usuarioModel')
-const bcrypt = require('bcrypt')
 
 const listarUsuarios = async (req, res) => {
     const usuarios = await usuarioModel.getUsuarios()
@@ -14,12 +13,11 @@ const obtenerUsuario = async (req, res) => {
 const registrarCliente = async (req, res) => {
   try {
     const datos = req.body
-    const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
-    await usuarioModel.registrarCliente({ ...datos, contraseña: hashedPassword })
+    await usuarioModel.registrarCliente({ ...datos, correo: datos.correo_usuario, contraseña: datos.contraseña })
     res.status(201).json({ mensaje: 'Cliente registrado exitosamente' })
   } catch (error) {
     console.error('Error en registrarCliente:', error)
-    res.status(500).json({ error: error.message || 'Error al registrar el cliente' })
+    res.status(500).json({ error: 'Error al registrar el cliente' })
   }
 }
 
@@ -27,9 +25,8 @@ const registrarCliente = async (req, res) => {
 const crearUsuarioDesdeAdmin = async (req, res) => {
     try {
         const datos = req.body
-        const hashedPassword = await bcrypt.hash(datos.contraseña, 10)
 
-        await usuarioModel.crearUsuarioDesdeAdmin({...datos, contraseña: hashedPassword})
+        await usuarioModel.crearUsuarioDesdeAdmin({...datos, contraseña: datos.contraseña})
 
         res.status(201).json({mensaje: 'Usuario creado por el administrador exitosamente'})
     } catch (error) {

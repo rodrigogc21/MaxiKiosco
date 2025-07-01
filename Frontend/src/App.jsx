@@ -1,35 +1,45 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CarritoProvider } from "./context/carritoContext";
-import LoginCliente from "./pages/LoginCliente";
-import Home from "./pages/Home";
-import Categorias from "./pages/Categorias";
-import ProductosPorCategoria from "./pages/ProductosPorCategoria";
-import Layout from "./components/Layout";
+import { Routes, Route } from "react-router-dom";
+import RutaProtegida from './components/RutaProtegida'
+import LayoutB from "./components/LayoutB";
+import HomeB from "./pages/HomeB"
+import Login from "./pages/Login"
 import Registro from "./pages/Registro";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import CategoriasProd from "./pages/CategoriasProd";
+import Carrito from "./components/Carrito"
+import Menu from "./components/Menu"
+import CrudProductos from './pages/CrudProductos';
 
 const App = () => {
   return (
-    <Router>
-      <CarritoProvider>
-        <Layout>
           <Routes>
-            <Route path="/" element={<LoginCliente />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/registro" element={<Registro />} />
-            <Route path="/categorias" element={<Categorias />} />
-            <Route path="/productos/:id" element={<ProductosPorCategoria />} />
-            <Route path="/login" element={<LoginCliente />} />
+            <Route path="/" element={<LayoutB />}>
+              <Route index element={<HomeB />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/registro" element={<Registro />} />
+              <Route path="/catalogo" element={<CategoriasProd />} />
+              <Route path="/carrito" element={<Carrito />} />
+            </Route>
+
+            <Route
+            path="/menu"
+            element={
+              <RutaProtegida allowedRoles={['admin', 'empleado']}>
+                <Menu />
+              </RutaProtegida>
+            }
+           />
+
+          <Route
+          path="/productos"
+          element={
+            <RutaProtegida allowedRoles={['admin', 'empleado']}>
+              <CrudProductos />
+            </RutaProtegida>
+          }
+         />
 
           </Routes>
-        </Layout>
-
-        {/* 🔔 Contenedor de los toasts */}
-        <ToastContainer position="bottom-right" autoClose={2000} />
-      </CarritoProvider>
-    </Router>
   );
 };
 

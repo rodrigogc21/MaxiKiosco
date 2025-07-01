@@ -1,41 +1,86 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Registro = () => {
-  const [email, setEmail] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [telefono, setTelefono] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
+    if (!correo) {
       setError("El correo es obligatorio");
       return;
     }
-
     if (!password) {
       setError("La contraseña es obligatoria");
       return;
     }
-
     if (password.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres");
       return;
     }
-
     setError("");
-    alert(`Registrado con: ${email}`);
+
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/registro", {
+        method: "POST",
+        headers:{'Content-type': 'application/json'},
+        body: JSON.stringify({
+          nombre_usuario: nombre,
+          apellido_usuario: apellido,
+          correo_usuario: correo,
+          contraseña: password,
+          direccion_usuario: direccion,
+          telefono_usuario: telefono
+        })
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        alert('Usuario registrado exitosamente')
+        navigate('/home')
+      } else {
+        alert('Error al registrar usuario: ' + data.error)
+      }
+    } catch (err) {
+      console.error (err)
+      alert('Error al conectar con el backend')
+    }
   };
 
   return (
     <div style={styles.container}>
       <h2>Registro</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
+         <input
+          type="name"
+          placeholder="Nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          style={styles.input}
+          required
+        />
+         <input
+          type="surname"
+          placeholder="Apellido"
+          value={apellido}
+          onChange={(e) => setApellido(e.target.value)}
+          style={styles.input}
+          required
+        />
         <input
           type="email"
           placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
           style={styles.input}
           required
         />
@@ -47,6 +92,22 @@ const Registro = () => {
           style={styles.input}
           required
           minLength={6}
+        />
+         <input
+          type="address"
+          placeholder="Dirección"
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+          style={styles.input}
+          required
+        />
+         <input
+          type="number"
+          placeholder="Teléfono"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+          style={styles.input}
+          required
         />
         {error && <p style={styles.error}>{error}</p>}
         <button type="submit" style={styles.button}>

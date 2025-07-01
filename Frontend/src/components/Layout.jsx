@@ -4,6 +4,7 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaHome, FaSignInAlt, FaUserPlus, 
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
+  const usuario = JSON.parse(localStorage.getItem('usuario'))
 
   return (
     <div
@@ -34,7 +35,7 @@ const Layout = ({ children }) => {
             src="https://scontent.ftuc1-1.fna.fbcdn.net/v/t39.30808-6/301021047_493230899479883_2558814586494829949_n.png?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=e5knsrGguqIQ7kNvwHDxWJi&_nc_oc=Adnoh2tKZEvm9dCvJ-Z8tB1FRuwkHiChHPYbgHK0npCgYA5piXvFOiacE5-3-z7TYMo&_nc_zt=23&_nc_ht=scontent.ftuc1-1.fna&_nc_gid=8vHPImGmeH1M5F6JPOLBkQ&oh=00_AfMs7CrMoxZ9iGT86WPWXYnxiPir48hC67IEHSgvTmJN3g&oe=685E6D2E"
             alt="MaxiKiosco Logo"
             style={{ height: 80, cursor: "pointer", marginRight: "1rem" }}
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/")}
           />
           <div
             style={{

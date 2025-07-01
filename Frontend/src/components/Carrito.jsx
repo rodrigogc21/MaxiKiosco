@@ -1,147 +1,124 @@
-import React from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import { useCarrito } from "../context/carritoContext";
+import {useState, useEffect} from 'react'
 
 const Carrito = () => {
-  const {
-    carrito,
-    aumentarCantidad,
-    disminuirCantidad,
-    eliminarDelCarrito,
-    vaciarCarrito,
-  } = useCarrito();
+  const [carrito, setCarrito] = useState([])
+  const [total, setTotal] = useState(0)
+  const [formaPago, setFormaPago] = useState(1)
+  const [mensaje, setMensaje] = useState('')
+  const [procesando, setProcesando] = useState(false)
 
-  const total = carrito.reduce(
-    (acc, item) => acc + item.precio * item.cantidad,
-    0
-  );
+  const usuario = JSON.parse(localStorage.getItem('usuario'))
+  const idUsuario = usuario?.id_usuario
+
+  useEffect(() => {
+    if (!idUsuario) return
+
+    fetch(`http://localhost:3001/api/carrito/${idUsuario}`, {
+      headers: {
+    'Authorization': `Bearer ${usuario?.token}`
+    }})
+    .then(res => res.json())
+    .then(data => {
+
+      if (!Array.isArray(data)) {
+      throw new Error('Formato de respuesta inválido')
+      }
+
+      setCarrito(data)
+
+      const total = data.reduce((acc, item) => acc + item.subtotal, 0)
+      setTotal(total)
+    })
+    .catch(err => console.error('Error al cargar el carrito:', err))
+  }, [idUsuario])
+
+  const finalizarCompra = async () => {
+    setProcesando(true)
+    try {
+      const res = await fetch('http://localhost:3001/api/ventas/procesar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${usuario?.token}`
+          },
+        body: JSON.stringify({
+          id_usuario: idUsuario,
+          id_formaPago: formaPago
+        })
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setMensaje(`Compra realizada con éxito. ID de venta: ${data.idVenta}`)
+        setCarrito([])
+        setTotal(0)
+      } else {
+        setMensaje(data.error || 'Error al finalizar la compra.')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setMensaje('Error en la conexión.')
+    } finally {
+      setProcesando(false)
+    }
+  }
 
   return (
-    <div
-      style={{
-        flex: 1,
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "1rem",
-        backgroundColor: "#f9f9f9",
-        maxHeight: "400px",
-        overflowY: "auto",
-      }}
-    >
-      <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-        <FaShoppingCart color="#007bff" size={24} />
-        Carrito
-      </h3>
-
-      {carrito.length === 0 ? (
-        <p>El carrito está vacío.</p>
+    <div className="container py-4">
+      <h2>Mi carrito</h2>
+      {!idUsuario ? (
+        <p>Debes iniciar sesión para ver el carrito</p>
+      ) : carrito.length === 0 ? (
+        <p>No hay productos en el carrito</p>
       ) : (
         <>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {carrito.map((item) => (
-              <li
-                key={item._id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "0.5rem",
-                  borderBottom: "1px solid #ddd",
-                  paddingBottom: "0.25rem",
-                }}
-              >
-                <div style={{ flex: 2 }}>
-                  {item.nombre} x {item.cantidad}
-                </div>
-
-                <div style={{ flex: 2, textAlign: "right" }}>
-                  ${item.precio * item.cantidad}
-                </div>
-
-                <div
-                  style={{
-                    flex: 2,
-                    display: "flex",
-                    gap: "0.25rem",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                  }}
-                >
-                  <button
-                    onClick={() => disminuirCantidad(item._id)}
-                    style={{
-                      padding: "2px 6px",
-                      cursor: "pointer",
-                      borderRadius: "3px",
-                      border: "1px solid #007bff",
-                      backgroundColor: "white",
-                      color: "#007bff",
-                    }}
-                  >
-                    -
-                  </button>
-                  <button
-                    onClick={() => aumentarCantidad(item._id)}
-                    style={{
-                      padding: "2px 6px",
-                      cursor: "pointer",
-                      borderRadius: "3px",
-                      border: "1px solid #007bff",
-                      backgroundColor: "white",
-                      color: "#007bff",
-                    }}
-                  >
-                    +
-                  </button>
-                  <button
-                    onClick={() => eliminarDelCarrito(item._id)}
-                    style={{
-                      backgroundColor: "#dc3545",
-                      border: "none",
-                      color: "white",
-                      borderRadius: "3px",
-                      cursor: "pointer",
-                      padding: "0 6px",
-                    }}
-                    title="Eliminar producto"
-                  >
-                    X
-                  </button>
-                </div>
-              </li>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Productos</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {carrito.map((item, index) => (
+              <tr key={index}>
+                <td>{item.nombre_producto}</td>
+                <td>{item.precio_unitario}</td>
+                <td>{item.cantidad}</td>
+                <td>${item.subtotal}</td>
+              </tr>
             ))}
-          </ul>
+          </tbody>
+        </table>
 
-          <p
-            style={{
-              fontWeight: "bold",
-              fontSize: "1.1rem",
-              marginTop: "1rem",
-              textAlign: "right",
-            }}
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <strong>Total: ${total.toFixed(2)}</strong>
+          <select
+          className="form-select w-auto"
+          value={formaPago}
+          onChange={(e) => setFormaPago(Number(e.target.value))}
           >
-            Total: ${total}
-          </p>
+            <option value={1}>Efectivo</option>
+            <option value={2}>Tarjeta</option>
+            <option value={3}>Mercado Pago</option>
+          </select>
+        </div>
 
-          <button
-            onClick={vaciarCarrito}
-            style={{
-              marginTop: "1rem",
-              width: "100%",
-              padding: "0.5rem",
-              backgroundColor: "#6c757d",
-              border: "none",
-              color: "white",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Vaciar carrito
-          </button>
+        <button className="btn btn-success" onClick={finalizarCompra} disabled={procesando}>
+          {procesando ? 'Procesando...' : 'Finalizar Compra'}
+        </button>
         </>
       )}
-    </div>
-  );
-};
 
-export default Carrito;
+      {mensaje && (
+        <div className="alert alert-info mt-3">
+          {mensaje}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Carrito

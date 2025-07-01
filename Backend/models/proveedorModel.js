@@ -1,8 +1,8 @@
 const db = require('../config/db.js')
 
 const getProveedores = async () => {
-    const result = await db.query('SELECT * FROM proveedor')
-    return result.rows
+    const [rows] = await db.query('SELECT * FROM proveedor')
+    return rows
 }
 
 const getProveedorById = async (id_proveedor) => {

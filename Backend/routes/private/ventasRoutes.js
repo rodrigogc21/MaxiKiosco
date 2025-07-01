@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const controlador = require('../../controllers/ventaController')
-const verificarToken = require('../../Middleware/verificarToken')
-const verificarRol = require('../../Middleware/verificarRol')
+// const verificarToken = require('../../Middleware/verificarToken')
+// const verificarRol = require('../../Middleware/verificarRol')
 
-router.use(verificarToken)
-router.use(verificarRol(['admin', 'empleado']))
+// router.use(verificarToken)
+// router.use(verificarRol(['admin', 'empleado']))
 
-router.post('/procesar-carrito', controlador.procesarVentaDesdeCarrito)
+router.post('/procesar', controlador.procesarVenta)
 
 module.exports = router
