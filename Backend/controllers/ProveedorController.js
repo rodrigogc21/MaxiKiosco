@@ -15,7 +15,8 @@ const crearProveedor = async (req, res) => {
         await proveedorModel.crearProveedor(req.body)
         res.status(201).json({mensaje: 'Proveedor creado exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al crear el proveedor'})
+        console.error('Error al crear el proveedor', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -24,7 +25,8 @@ const editarProveedor = async (req, res) => {
         await proveedorModel.actualizarProveedor(req.params.id, req.body)
         res.json({mensaje: 'Proveedor actualizado exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al actualizar el proveedor'})
+        console.error('Error al actualizar el proveedor', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 
@@ -33,7 +35,8 @@ const eliminarProveedor = async (req, res) => {
         await proveedorModel.eliminarProveedor(req.params.id)
         res.json({mensaje: 'Proveedor eliminado exitosamente'})
     } catch (error) {
-        res.status(500).json({error: 'Error al eliminar el proveedor'})
+        console.error('Error al eliminar el proveedor', error)
+        res.status(500).json({error: 'Error del servidor'})
     }
 }
 

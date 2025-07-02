@@ -5,7 +5,11 @@ const db = mysql.createPool({
   port: 3306,
   user: 'root',
   password: '',
-  database: 'maxikiosco3'
+  database: 'maxikiosco3',
+  multipleStatements: true,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 module.exports = db;

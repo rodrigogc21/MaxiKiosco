@@ -9,8 +9,8 @@ app.use(express.json());
 
 
 // Rutas públicas
-const verProductosRoutes = require('./routes/public/verProductosRoutes');
-const authRoutes = require('./routes/public/authRoutes');
+const verProductosRoutes = require('./routes/public/verProductosRoutes')
+const authRoutes = require('./routes/public/authRoutes')
 const verCategoriasRoutes = require('./routes/public/verCategoriasRoutes')
 
 app.use('/api/productos', verProductosRoutes);

@@ -7,7 +7,7 @@ const getProductos = async () => {
 
 const getProductoById = async (id_producto) => {
   const [rows] = await db.query('SELECT * FROM producto WHERE id_producto = ?', [id_producto]);
-  return rows[0];
+  return rows
 };
 
 const getProductosPorCategoria = async (id_categoria) => {

@@ -7,8 +7,8 @@ const procesarVenta = async (req, res) => {
         const idVenta = await ventaModel.procesarCarrito(id_usuario, id_formaPago)
         res.status(201).json({mensaje: 'Venta procesada exitosamente', idVenta})
     } catch (error) {
-        console.error('Error al procesar carrito: ', error)
-        res.status(500).json({error: 'Error al procesar la venta'})
+        console.error('Error al procesar la venta', error)
+        res.status(500).json({error: error.message || 'Error del servidor'})
     }
 }
 

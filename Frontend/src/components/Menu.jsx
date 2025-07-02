@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/userContext';
 
 const Menu = () => {
   const { usuario, logout } = useUser();
@@ -51,7 +51,7 @@ const Menu = () => {
             <Link
               key={to}
               to={to}
-              className="btn btn-primary btn-lg shadow"
+              className="btn btn-dark btn-lg shadow"
               style={{ minWidth: '220px' }}
             >
               {label}

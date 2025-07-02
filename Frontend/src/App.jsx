@@ -6,11 +6,12 @@ import HomeB from "./pages/HomeB";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import CategoriasProd from "./pages/CategoriasProd";
-import Carrito from "./components/Carrito";;
+import Carrito from "./components/Carrito";
 import Menu from "./components/Menu";
 import CrudProductos from './pages/CrudProductos';
 import CrudUsuarios from './pages/CrudUsuarios';
-import CrudCategorias from './pages/CrudCategorias'
+import CrudCategorias from './pages/CrudCategorias';
+import CrudProveedores from './pages/CrudProveedores';
 
 const App = () => {
   return (
@@ -55,6 +56,15 @@ const App = () => {
          element={
           <RutaProtegida allowedRoles={['admin']}>
             <CrudCategorias />
+          </RutaProtegida>
+         }
+        />
+
+        <Route
+        path="/proveedores"
+        element={
+          <RutaProtegida allowedRoles={['admin']}>
+            <CrudProveedores />
           </RutaProtegida>
          }
         />
